@@ -10,6 +10,8 @@ script:
   - if [ "${TRAVIS_OS_NAME}" = 'linux' ]; then if [ "${VALGRIND}" = "1" ]; then make valgrind_linux_build; else make generate_linux build_linux test_linux; fi; fi
   - if [ "${TRAVIS_OS_NAME}" = 'osx' ]; then make generate_osx build_osx test_osx; fi
 
+osx_image: xcode12.2
+
 jobs:
   include:
     - os: linux
