@@ -49,29 +49,31 @@ pool:
 steps:
 - script: echo $(Agent.JobName)
   displayName: Test
+- script: echo $(Agent.StageName)
+  displayName: Test2
 
 - script: bash ci_scripts/travis_ci_install_osx.sh
-  displayName: 'Install'
+  displayName: Install
   condition: and(succeeded(), eq( variables['Agent.OS'], 'Darwin' ))
 
 # Build
 - script: make generate_linux build_linux
-  displayName: 'Build Linux'
+  displayName: Build Linux
   condition: and(succeeded(), eq( variables['Agent.OS'], 'Linux' ))
 - script: make generate_osx build_osx
-  displayName: 'Build OSX'
+  displayName: Build OSX
   condition: and(succeeded(), eq( variables['Agent.OS'], 'Darwin' ))
 - script: make generate_windows build_windows
-  displayName: 'Build Windows'
+  displayName: Build Windows
   condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
 
 # Test
 - script: make test_linux
-  displayName: 'Test Linux'
+  displayName: Test Linux
   condition: and(succeeded(), eq( variables['Agent.OS'], 'Linux' ))
 - script: make test_osx
-  displayName: 'Test OSX'
+  displayName: Test OSX
   condition: and(succeeded(), eq( variables['Agent.OS'], 'Darwin' ))
 - script: make test_windows
-  displayName: 'Test Windows'
+  displayName: Test Windows
   condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
