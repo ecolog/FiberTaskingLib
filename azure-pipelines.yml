@@ -49,7 +49,7 @@ pool:
 steps:
 - script: echo $(Agent.JobName)
   displayName: Test
-- script: echo $(Agent.StageName)
+- script: echo $(System.StageName)
   displayName: Test2
 
 - script: bash ci_scripts/travis_ci_install_osx.sh
