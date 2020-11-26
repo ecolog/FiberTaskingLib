@@ -13,7 +13,7 @@ strategy:
       imageName: ubuntu-18.04
       compiler: gcc
       version: 9
-    linux-gcc-3.7:
+    linux-clang-3.7:
       imageName: ubuntu-18.04
       compiler: clang
       version: 3.7
@@ -47,7 +47,7 @@ pool:
 
 # Install
 steps:
-- script: echo $SYSTEM_JOBNAME
+- script: echo $(Agent.JobName)
   displayName: Test
 
 - script: bash ci_scripts/travis_ci_install_osx.sh
