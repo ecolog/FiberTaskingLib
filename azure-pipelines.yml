@@ -47,6 +47,9 @@ pool:
 
 # Install
 steps:
+- script: echo $SYSTEM_JOBNAME
+  displayName: Test
+
 - script: bash ci_scripts/travis_ci_install_osx.sh
   displayName: 'Install'
   condition: and(succeeded(), eq( variables['Agent.OS'], 'Darwin' ))
