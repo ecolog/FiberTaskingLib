@@ -1,0 +1,74 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+strategy:
+  matrix:
+    linux-gcc-4.9:
+      imageName: ubuntu-18.04
+      compiler: gcc
+      version: 4.9
+    linux-gcc-9:
+      imageName: ubuntu-18.04
+      compiler: gcc
+      version: 9
+    linux-gcc-3.7:
+      imageName: ubuntu-18.04
+      compiler: clang
+      version: 3.7
+    linux-clang-9:
+      imageName: ubuntu-18.04
+      compiler: clang
+      version: 9
+    osx-gcc-4.9:
+      imageName: macos-10.15
+      compiler: gcc
+      version: 4.9
+    osx-gcc-9:
+      imageName: macos-10.15
+      compiler: gcc
+      version: 9
+    osx-clang-9:
+      imageName: macos-10.15
+      compiler: clang
+      version: 9
+    windows-2017:
+      imageName: vs2017-win2016
+      cmake.gen.name: Visual Studio 15 2017 Win64
+      cmake.arch.arg: ''
+    windows-2019:
+      imageName: windows-2019
+      cmake.gen.name: Visual Studio 16 2019
+      cmake.arch.arg: -A x64
+
+pool:
+  vmImage: $(imageName)
+
+# Install
+steps:
+- script: bash ci_scripts/travis_ci_install_osx.sh
+  displayName: 'Install'
+  condition: and(succeeded(), eq( variables['Agent.OS'], 'Darwin' ))
+
+# Build
+- script: make generate_linux build_linux
+  displayName: 'Build Linux'
+  condition: and(succeeded(), eq( variables['Agent.OS'], 'Linux' ))
+- script: make generate_osx build_osx
+  displayName: 'Build OSX'
+  condition: and(succeeded(), eq( variables['Agent.OS'], 'Darwin' ))
+- script: make generate_windows build_windows
+  displayName: 'Build Windows'
+  condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
+
+# Test
+- script: make test_linux
+  displayName: 'Test Linux'
+  condition: and(succeeded(), eq( variables['Agent.OS'], 'Linux' ))
+- script: make test_osx
+  displayName: 'Test OSX'
+  condition: and(succeeded(), eq( variables['Agent.OS'], 'Darwin' ))
+- script: make test_windows
+  displayName: 'Test Windows'
+  condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ))
